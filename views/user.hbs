@@ -1,0 +1,54 @@
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+    <!-- Header -->
+    <header class="w3-container" style="padding-top:22px">
+        <h5><b><i class="fa fa-dashboard"></i> Create New Post</b></h5>
+    </header>
+
+    <hr>
+    <div class="w3-panel">
+        <div class="w3-container">
+            <input type="hidden" id="userHidden" value="{{user._id}}"/>
+            <h5>New Post</h5>
+            <div class="form-group">
+                <label for="name">Department</label>
+                <select id="user_selected_depart" class="js-example-basic-multiple" style="width: 100%;" name="states">
+                    {{#each user.department}}
+                        <option value="{{id}}">{{departmentName}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+
+            <h6>Title</h6>
+            <textarea id="user_noti_title" name="title" rows="1" cols="30"></textarea>
+            <h6>Content</h6>
+            <textarea id="user_noti_content" name="content" rows="10" cols="30"></textarea>
+
+            <div class="form-group">
+                <label for="myfile">Add file:</label>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="myFile" multiple>
+                    <label class="custom-file-label" for="myFile">Choose file</label>
+                </div>
+            </div>
+
+            <button type="button" class="w3-button w3-white" onclick="notiSubmit()">Post <i class="fa fa-share-alt w3-text-green w3-large"></i></button>
+        </div>
+
+        <hr>
+        <div class="w3-container">
+            <h5>Authorized</h5>
+            <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+                {{!-- Td: 1-12-2021 --}}
+                {{#each user.department}}
+                    <tr id="tr{{id}}">
+                        <td>{{departmentName}}</td>
+                    </tr>
+                {{/each}}
+                {{!-- End --}}
+            </table><br>
+        </div>
+    </div>
+    <!-- End page content -->
+</div>

@@ -1,0 +1,375 @@
+<body class="w3-light-grey">
+
+            <!-- !PAGE CONTENT! -->
+            <div class="w3-main" style="margin-left:300px;margin-top:43px;">
+                <!-- Header -->
+                <header class="w3-container" style="padding-top:22px">
+                    <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
+                </header>
+            
+            <div class="w3-panel">
+                
+                <div class="w3-container">
+                    <h5>Department List</h5>
+                    <table id="depart_table" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+                        {{#each departlst}}
+                            <tr id="tr_depart{{id}}">
+                                <td id="depart_role_{{role}}">{{departmentName}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-light fa fa-edit" onclick="editDepartDialog('{{id}}')" data-toggle="modal" data-target="#edit-department-dialog"/>
+                                    <button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelDepart('{{id}}')" data-toggle="modal" data-target="#conf-del-depart"/>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </table><br>
+                    <button type="button" class="btn btn-light border" data-toggle="modal" data-target="#new-department-dialog">
+                        <i class="fa fa-file"></i> Create New Department
+                    </button>
+                </div>
+                <hr>
+                <div class="w3-container">
+                <h5>Department Users</h5>
+                <table id="departuser_table" class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+                    {{#if user_depart_lst}}
+                        {{#each user_depart_lst}}
+                            <tr id="tr_user{{id}}">
+                                <td>
+                                    <img src="{{user.image_url}}" class="w3-left w3-circle w3-margin-right" style="width:35px">
+                                    <span class="w3-xlarge">{{name}}</span><br>
+                                </td>
+                                <td>{{username}}</td>
+                                <td>{{email}}</td>
+                                <td id="td_depart_{{id}}">
+                                    {{#if department}}
+                                        {{#each department}}
+                                            <p id="DU_{{_id}}">{{departmentName}}</p>
+                                        {{/each}}
+                                    {{/if}}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-light fa fa-edit" onclick="editDUserDialog('{{id}}', '{{username}}')" data-toggle="modal" data-target="#edit-userdepart-dialog"/>
+                                    <button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelUser('{{id}}', '{{username}}')" data-toggle="modal" data-target="#conf-del-user"/>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    {{/if}}
+                </table><br>
+                <button type="button" onclick="setCreate()" class="btn btn-light border" data-toggle="modal" data-target="#new-user-dialog">
+                    <i class="fa fa-file"></i> Create New User for Department
+                </button>
+                </div>
+                <hr>
+
+                <div class="w3-container">
+                <h5>Student Users</h5>
+                <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+                    {{#if user_stu_lst}}
+                        {{#each user_stu_lst}}
+                            <tr id="tr_user{{id}}">
+                                <td>
+                                    <img src="{{image_url}}" class="w3-left w3-circle w3-margin-right" style="width:35px">
+                                    <span class="w3-xlarge">{{name}}</span><br>
+                                </td>
+                                <td>{{email}}</td>
+                                <td>{{class}}</td>
+                                <td id="td_stu_{{id}}">
+                                    {{#if department}}
+                                        {{#each department}}
+                                            <span id="SU_{{_id}}">{{departmentName}}</span>
+                                        {{/each}}
+                                    {{/if}}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-light fa fa-edit" onclick="editSUserDialog('{{id}}', '{{email}}', '{{name}}', '{{class}}')" data-toggle="modal" data-target="#edit-userstu-dialog"/>
+                                    <button type="button" class="btn btn-light fa fa-minus-circle" onclick="confirmDelUser('{{id}}', '{{email}}')" data-toggle="modal" data-target="#conf-del-user"/>
+                                </td>
+                            </tr>
+                        {{/each}}
+                    {{/if}}
+                </table><br>
+                </div>
+                <hr>
+
+<!-- New department dialog -->
+<div class="modal fade" id="new-department-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Tạo phòng ban mới</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">Department Name</label>
+                    <input type="text" placeholder="Department name" class="form-control" id="newDepartment" />
+                </div>
+
+                <div class="form-radio">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" checked="checked" name="radio_depart" value="0"><i
+                                class="check-box"></i>Phòng
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="radio_depart" value="1"><i class="check-box"></i>Khoa
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="newDepartment()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit department dialog -->
+<div class="modal fade" id="edit-department-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Chỉnh sửa phòng ban</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">Department Name</label>
+                    <input type="text" placeholder="Department name" class="form-control" id="editDepartment" />
+                </div>
+
+                <div class="form-radio">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" checked="checked" name="radio_edit_depart" value="0"><i
+                                class="check-box"></i>Phòng
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="radio_edit_depart" value="1"><i class="check-box"></i>Khoa
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="editD"/>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="editDepart()" data-dismiss="modal">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New user for Phòng/khoa dialog -->
+<div class="modal fade" id="new-user-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Tạo user mới</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" placeholder="Name" class="form-control" id="newName" />
+                </div>
+                <div class="form-group">
+                    <label for="name">Userame</label>
+                    <input type="text" placeholder="Username" class="form-control" id="newUsername" onkeypress="return event.charCode != 32"/>
+                </div>
+                <div class="form-group">
+                    <label for="name">Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="Password"
+                        id="newPassword" />
+                </div>
+                <div class="form-group">
+                    <label for="name">Confirm Password</label>
+                    <input type="password" name="confpassword" class="form-control" placeholder="Password"
+                        id="newConfpassword" />
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Chọn Phòng ban</label>
+                    <select class="js-example-basic-multiple" style="width: 100%;" name="states[]" multiple="multiple">
+                        {{#each departlst}}
+                            <option value="{{id}}">{{departmentName}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="createUser()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit user for Phòng/khoa dialog -->
+<div class="modal fade" id="edit-userdepart-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit user - <strong id="editUserDepart">517H0042</strong></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" placeholder="Name" class="form-control" id="editUDName" />
+                </div>
+                <div class="form-group">
+                    <label for="name">New Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="Password"
+                        id="newDUPassword" />
+                </div>
+                <div class="form-group">
+                    <label for="name">Confirm New Password</label>
+                    <input type="password" name="confpassword" class="form-control" placeholder="Password"
+                        id="newDUPasswordConf" />
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Chọn Phòng ban</label>
+                    <select class="js-editDU-basic-multiple" style="width: 100%;" name="states[]" multiple="multiple">
+                        {{#each departlst}}
+                            <option id="edit_user_{{id}}" value="{{id}}">{{departmentName}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <input type="hidden" id="editUD_hidden"/>
+            </div>
+
+            <div class="modal-footer">
+                <button id="edit-userdepart-btn" type="button" class="btn btn-success" onclick="editDUser()" data-dismiss="modal">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit user for Student dialog -->
+<div class="modal fade" id="edit-userstu-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit student - <strong id="editUserStu">517H0042</strong></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" placeholder="Name" class="form-control" id="editSUName" />
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Class</label>
+                    <input type="text" placeholder="Class" class="form-control" id="editSUClass" />
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Chọn Phòng ban</label>
+                    <select class="js-editSU-basic-single" style="width: 100%;" name="states">
+                        {{#each stu_departLst}}
+                            <option id="edit_user_{{id}}" value="{{id}}">{{departmentName}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <input type="hidden" id="editSU_hidden"/>
+            </div>
+
+            <div class="modal-footer">
+                <button id="edit-userdepart-btn" type="button" class="btn btn-success" onclick="editSUser()" data-dismiss="modal">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirm delete Department -->
+<div class="modal fade" id="conf-del-depart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Delete Department</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          Bạn có chắc rằng muốn xóa <strong id="delDepartName">517H0042</strong>?
+        </div>
+        <input type="hidden" id="delidD"/>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" onclick="delDepart()" data-dismiss="modal">Delete</button>
+          <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<!-- End Confirm delete Department -->
+
+<!-- Confirm delete User -->
+<div class="modal fade" id="conf-del-user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Delete User</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          Bạn có chắc rằng muốn xóa user <strong id="delUserName">517H0042</strong>?
+        </div>
+        <input type="hidden" id="delidU"/>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" onclick="delUser()" data-dismiss="modal">Delete</button>
+          <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+</div>
+<!-- End Confirm delete User -->
+
+
+<script>
+    // Get the Sidebar
+    var mySidebar = document.getElementById("mySidebar");
+
+    // Get the DIV with overlay effect
+    var overlayBg = document.getElementById("myOverlay");
+
+    // Toggle between showing and hiding the sidebar, and add overlay effect
+    function w3_open() {
+        if (mySidebar.style.display === 'block') {
+            mySidebar.style.display = 'none';
+            overlayBg.style.display = "none";
+        } else {
+            mySidebar.style.display = 'block';
+            overlayBg.style.display = "block";
+        }
+    }
+
+
+
+    // Close the sidebar with the close button
+    function w3_close() {
+        mySidebar.style.display = "none";
+        overlayBg.style.display = "none";
+    }
+</script>

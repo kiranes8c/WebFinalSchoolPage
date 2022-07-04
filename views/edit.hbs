@@ -1,0 +1,224 @@
+
+<div class="theme-layout">
+
+    <section>
+        <div class="feature-photo">
+            <figure><img src="/images/resources/timeline-1.jpg" alt=""></figure>
+            <form class="edit-phto">
+                <i class="fa fa-camera-retro"></i>
+                <label class="fileContainer">
+                    Edit Cover Photo
+                    <input type="file" />
+                </label>
+            </form>
+            <div class="container-fluid">
+                <div class="row merged">
+                    <div class="col-lg-2 col-sm-3">
+                        <div class="user-avatar">
+                            <figure>
+                                {{#if user.image_url}}
+                                    <img src="{{user.image_url}}" alt="">
+                                {{else}}
+                                    <img src="/images/resources/admin2.jpg" alt="">
+                                {{/if}}
+                                <form class="edit-phto">
+                                    <i class="fa fa-camera-retro"></i>
+                                    <label class="fileContainer">
+                                        Edit Display Photo
+                                        <input type="file" />
+                                    </label>
+                                </form>
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="col-lg-10 col-sm-9">
+                        <div class="timeline-info">
+                            <ul>
+                                <li class="admin-name">
+                                    <h5>{{user.name}}</h5>
+                                    <span>{{user.email}}</span>
+                                </li>
+                                <li>
+                                    <a class="" href="/me/{{user._id}}" title="" data-ripple="">time line</a>
+                                    <a class="active" href="/edit/{{user._id}}" title="" data-ripple="">Edit Account</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- top area -->
+    
+    <section>
+        <div class="gap gray-bg">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row" id="page-contents">
+                            <div class="col-lg-3">
+                                <aside class="sidebar static">
+                                    <div class="widget">
+                                        <h4 class="widget-title">Shortcuts</h4>
+                                        <ul class="naves">
+                                            <li>
+                                                <i class="ti-clipboard"></i>
+                                                <a href="/" title="">News feed</a>
+                                            </li>
+                                            <li>
+                                                <i class="ti-files"></i>
+                                                <a href="/me/{{user._id}}" title="">My page</a>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-edit"></i>
+                                                <a href="#" title="">Edit account</a>
+                                            </li>
+                                            <li>
+                                                <i class="ti-bell"></i>
+                                                <a href="/depost" title="">Department Post</a>
+                                            </li>
+                                            <button type="button" onclick="signOut()" class="btn btn-outline-info"><i
+                                                    class="ti-power-off"></i> Log
+                                                Out</button>
+                                        </ul>
+                                    </div><!-- Shortcuts -->
+
+                                </aside>
+                            </div><!-- sidebar -->
+                            <div class="col-lg-6">
+                                <div class="central-meta">
+                                    <div class="editing-info">
+                                        <h5 class="f-title"><i class="ti-info-alt"></i> Edit Basic Information
+                                        </h5>
+                                        <input type="hidden" id="edit_hidden_id" value="{{user.id}}"/>
+                                        <form method="POST" id="formEditUser" onsubmit="editUser(event)" enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                <input type="text" name="edit_user_name" required="required" value="{{user.name}}"/>
+                                                <label class="control-label" for="input">Name</label><i
+                                                    class="mtrl-select"></i>
+                                            </div>
+                                            {{#ifEquals user.role 2}}
+                                                <div class="form-group">
+                                                    <input type="text" name="edit_user_class" required="required" value="{{user.class}}"/>
+                                                    <label class="control-label" for="input">Class</label><i
+                                                        class="mtrl-select"></i>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="name">Chọn Khoa</label>
+                                                    <select class="js-editSU-basic-single" style="width: 100%;" name="states">
+                                                        {{#if userDepart}}
+                                                            <option id="edit_user_depart_{{userDepart.id}}" value="{{userDepart.id}}">{{userDepart.departmentName}}</option>
+                                                        {{/if}}
+                                                        {{#each departLst}}
+                                                            {{#ifEquals id ../userDepart.id}}
+                                                            {{else}}
+                                                                <option id="edit_user_depart_{{id}}" value="{{id}}">{{departmentName}}</option>
+                                                            {{/ifEquals}}
+                                                        {{/each}}
+                                                    </select>
+                                                </div>
+                                            {{else}}
+                                                <div class="form-group">
+                                                    <input type="text" required="required" />
+                                                    <label class="control-label" for="input"><a
+                                                            href="https://wpkixx.com/cdn-cgi/l/email-protection"
+                                                            class="__cf_email__"
+                                                            data-cfemail="4b0e262a22270b">[email&#160;protected]</a></label><i
+                                                        class="mtrl-select"></i>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <input type="password" name="edit_user_pw"/>
+                                                    <label class="control-label" for="input">Password</label><i
+                                                        class="mtrl-select"></i>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="password" name="edit_user_newpw"/>
+                                                    <label class="control-label" for="input">New Password</label><i
+                                                        class="mtrl-select"></i>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="password" name="edit_user_confnewpw"/>
+                                                    <label class="control-label" for="input">Confirm new Password</label><i
+                                                        class="mtrl-select"></i>
+                                                </div>
+                                            {{/ifEquals}}
+                                            {{!-- <div class="form-radio">
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" checked="checked" name="radio"><i
+                                                            class="check-box"></i>Male  
+                                                    </label>
+                                                </div>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="radio"><i class="check-box"></i>Female
+                                                    </label>
+                                                </div>
+                                            </div> --}}
+                                            <div class="form-group">
+                                                <div class="form-group half">
+                                                    My Avatar
+                                                    <label class="fileContainer" style="color: blue;">
+                                                        <i class="fa fa-image"></i>
+                                                        <input type="file" id="edit_upload_img" name="edit_upload_img" accept="image/*" onchange="previewEditAvatar(this);" style="width: 60px;height: 60px;">
+                                                    </label>
+                                                </div>
+                                                <div class="form-group half" style="width: min-content; float: right;">
+                                                    <button type="button" class="btn btn-light" style="display: contents;" data-toggle="modal" data-target="#edit_conf_del"><i class="fa fa-times-circle" style="color: red;"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <figure>
+                                                    <img id="edit_user_avatar" name="edit_user_avatar" src="{{user.image_url}}" class="edit_user_avatar"/>
+                                                </figure>
+                                            </div>
+
+                                            <div id="edit_user_div_error" class="alert alert-danger alert-dismissible fade" role="alert">
+                                                <strong id="edit_user_error">OMG ERROR!</strong>
+                                                <button type="button" class="close" onclick="closeEditError()" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="submit-btns">
+                                                <button type="submit" class="mtr-btn"><span>Update</span></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div><!-- centerl meta -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Confirm delete Image -->
+<div class="modal fade" id="edit_conf_del" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel">Delete Avatar</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body" style="text-align: center;">
+          Bạn có chắc rằng muốn xóa avatar hiện tại?</br>
+          Chức năng này sẽ xóa avatar của bạn chứ không phải hình ảnh bạn vừa tải lên.</br>
+          <strong>Lưu ý: Việc này sẽ xóa hình đại diện của bạn cả trên server và đưa avatar của bạn về mặc định!</strong>
+        </div>
+        <input type="hidden" id="editDelImg"/>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" onclick="avatarRemove()" data-dismiss="modal">Delete</button>
+          <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>

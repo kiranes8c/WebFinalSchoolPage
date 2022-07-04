@@ -1,0 +1,69 @@
+<div class="col-lg-9">
+    <div class="blog-sec right-pading">
+            <div class="blog-sec right-pading">
+                <div class="post-filter-sec">
+                    <div class="purify">
+                        <form action="/depost/filter" method="post">
+                                <select style="width: 100%;" name="select">
+                                    {{#if select}}<option value="{{curr_id}}">{{select}}</option>
+                                    {{else}}<option value="">All Department</option>
+                                    {{/if}}
+
+                                    {{#each departlst}}
+                                        {{#ifEquals departmentName ../select}}
+                                        {{else}}
+                                        <option value="{{id}}">{{departmentName}}</option>
+                                        {{/ifEquals}}
+                                    {{/each}}
+                                </select>
+                                <button type="submit" class="btn btn-outline-info"><i class="ti-filter"></i></i>
+                                    Filter</button>
+                            </div>
+                        </form>
+                        {{#if depost_list}}
+                        <div class="pagination">
+                            <a href="#">Page {{current}}/{{pages}}</a>
+                            <a href="/depost/{{filter}}/1">&laquo;</a>
+                            {{#each pagearray}}
+                                {{#ifEquals ../current this }}
+                                    <a href="#" class="active">
+                                {{else}}
+                                    <a href="/depost/{{../filter}}/{{this}}">
+                                {{/ifEquals}}
+                                {{this}}</a>
+                            {{/each}}
+                            <a href="/depost/{{filter}}/{{pages}}">&raquo;</a>
+                        </div>
+                        {{else}}
+                            <p>No post yet</p>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- pagination -->
+                    {{#if depost_list}}
+                    </div>
+
+                        {{#each depost_list}}
+                        <div class="l-post">
+                            <figure>
+                                <img src="/images/bloglist-1.jpg" alt="">
+                            </figure>
+                            <div class="l-post-meta">
+                                <h4><a href="/detail/{{id}}" title="">{{{title}}}</a></h4>
+                                <div class="l-post-ranking">
+                                    <a class="admin" href="/depost/filter/{{department}}/1" title=""><p>{{departmentName}}</p></a>
+                                    <p class="pdate" href="#" title="">Ngày đăng {{date}}</p>
+                                </div>
+                            </div>
+                        </div>
+                            <div value="{{id}}"></div>
+                        {{/each}}
+                    {{/if}}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+    

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>{{title}}</title>
+        {{!-- Init  --}}
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="" />
+    <meta name="keywords" content="" />{{!-- CongP update 24.11 Start --}}
+    <meta name="google-signin-client_id" content="184293983150-cfsqdifs6nb8qsprlve2qf21nb7jgpih.apps.googleusercontent.com">
+    <link rel="icon" href="/images/tdt.png" type="image/png" sizes="16x16">
+    
+    {{!-- CSS --}}
+    <link rel="stylesheet" href="/stylesheets/main.min.css">
+    {{!-- CongP update 28.11 Start --}}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js" 
+        integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" 
+        crossorigin="anonymous"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    {{!-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js"
+        integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj"
+        crossorigin="anonymous"></script>
+
+    <script src="/jquery/jquery.min.js"></script>
+    <script src="/javascripts/main.js"></script>
+    </head>
+
+    <body>
+
+            <div class="topbar transparent">
+                <div class="logo">
+                    <a title="" href="/"><img src="images/tdt.png" width="300px" alt=""></a>
+                </div>
+            </div><!-- topbar transparent header -->
+
+            <section>
+                <div style="position: fixed; text-align: center; width: 100%;z-index: 1000;">
+                <div id="myFlashMsg" class="alert alert-success alert-dismissible fade" style="display: none;" role="alert">
+                    <a href="#" id="flash_link" style="text-decoration: none;">
+                        <strong id="flashDepart">Holy OMG</strong> Vừa có thông báo mới.
+                    </a>
+                    <button type="button" class="close" onclick="closeFlash()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+
+                <div class="ext-gap bluesh low-opacity">
+                    <div class="content-bg-wrap" style="background: url(/images/TDTU.png)"></div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="top-banner">
+                                    <h1>Department</h1>
+                                    <nav class="breadcrumb">
+                                        <a class="breadcrumb-item" href="/depost">Department Home</a>
+                                        <a class="breadcrumb-item" href="/depost/list">Department List</a>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section><!-- top area animated -->
+            <section>
+
+                <div class="gap gray-bg">
+                    <div class="container-fluid">
+                        <div class="row" id="page-contents">
+                            <div class="col-lg-3">
+                                <aside class="sidebar static">
+                                    <div class="widget">
+                                        <h4 class="widget-title">Shortcuts</h4>
+                                        <ul class="naves">
+                                            <li>
+                                                <i class="ti-clipboard"></i>
+                                                <a href="/" title="">Home Page</a>
+                                            </li><li>
+                                                <i class="ti-bell"></i>
+                                                <a href="/depost" title="">Department Post</a>
+                                            </li><li>
+                                                <i class="ti-files"></i>
+                                                <a href="/depost/list" title="">Department List</a>
+                                            </li>
+                                            <button type="button" onclick="signOut()" class="btn btn-outline-info"><i
+                                                    class="ti-power-off"></i> Log Out</button>
+        
+                                        </ul>
+                                    </div><!-- Shortcuts -->
+                                </aside>
+                            </div>
+                            {{{body}}}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        
+        </div>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4">
+                        <div class="widget">
+                            <div class="foot-logo">
+                                <div class="logo">
+                                    <a href="/" title=""><img src="/images/logo.png" alt=""></a>
+                                </div>
+                                <p>
+                                    Light from here shall illuminate the entire universe.
+                                </p>
+                            </div>
+                            <ul class="location">
+                                <li>
+                                    <i class="ti-map-alt"></i>
+                                    <p>19 Đ.Nguyễn Hữu Thọ, Tân Hưng, Quận 7, Thành phố Hồ Chí Minh, Việt Nam</p>
+                                </li>
+                                <li>
+                                    <i class="ti-mobile"></i>
+                                    <p>+8419 002 024</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4">
+                        <div class="widget">
+                            <div class="widget-title">
+                                <h4>follow</h4>
+                            </div>
+                            <ul class="list-style">
+                                <li><i class="fa fa-facebook-square"></i> <a href="https://www.facebook.com/tonducthanguniversity"
+                                        title="">facebook</a></li>
+                                <li><i class="fa fa-twitter-square"></i><a href="#"
+                                        title="">twitter</a></li>
+                                <li><i class="fa fa-instagram"></i><a href="#"
+                                        title="">instagram</a></li>
+                                <li><i class="fa fa-google-plus-square"></i> <a href="#"
+                                        title="">Google+</a></li>
+                                <li><i class="fa fa-pinterest-square"></i> <a href="#"
+                                        title="">Pintrest</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4">
+                        <div class="widget">
+                            <div class="widget-title">
+                                <h4>Navigate</h4>
+                            </div>
+                            <ul class="list-style">
+                                <li><a href="#" title="">about us</a></li>
+                                <li><a href="#" title="">contact us</a></li>
+                                <li><a href="#" title="">terms & Conditions</a></li>
+                                <li><a href="#" title="">RSS syndication</a></li>
+                                <li><a href="#" title="">Sitemap</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4">
+                        <div class="widget">
+                            <div class="widget-title">
+                                <h4>Members</h4>
+                            </div>
+                            <ul class="list-style">
+                                <li><a href="#" title="">Phạm Công</a></li>
+                                <li><a href="#" title="">Phạm Tiến Đạt</a></li>
+                                <li><a href="#" title="">Nguyễn Công Thành</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4">
+                        <div class="widget">
+                            <div class="widget-title">
+                                <h4>download apps</h4>
+                            </div>
+                            <ul class="colla-apps">
+                                <li><a href="https://play.google.com/store?hl=en" title=""><i
+                                            class="fa fa-android"></i>android</a></li>
+                                <li><a href="https://www.apple.com/lae/ios/app-store/" title=""><i
+                                            class="ti-apple"></i>iPhone</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer><!-- footer -->
+    </body>
+
+</html>

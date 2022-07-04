@@ -1,0 +1,416 @@
+<body>
+    <!--<div class="se-pre-con"></div>-->
+    <div class="theme-layout">
+        <section>
+            <div class="feature-photo">
+                <figure><img src="/images/TDTU.png" alt=""></figure>
+                <form class="edit-phto">
+                    <i class="fa fa-camera-retro"></i>
+                    <label class="fileContainer">
+                        Edit Cover Photo
+                        <input type="file" />
+                    </label>
+                </form>
+                <div class="container-fluid">
+                    <div class="row merged">
+                        <div class="col-lg-2 col-sm-3">
+                            <div class="user-avatar">
+                                <figure>
+                                    {{#if user_show.image_url}}
+                                        <img src="{{user_show.image_url}}" alt="">
+                                    {{else}}
+                                        <img src="/images/resources/admin2.jpg" alt="">
+                                    {{/if}}
+                                    <form class="edit-phto">
+                                        <i class="fa fa-camera-retro"></i>
+                                        <label class="fileContainer">
+                                            Edit Display Photo
+                                            <input type="file" />
+                                        </label>
+                                    </form>
+                                </figure>
+                            </div>
+                        </div>
+                        <div class="col-lg-10 col-sm-9">
+                            <div class="timeline-info">
+                                <ul>
+                                    <li class="admin-name">
+                                        <h5>{{user_show.name}}</h5>
+                                        <span>{{user_show.email}}</span>
+                                    </li>
+                                    <li>
+                                        <a class="active" href="/me/{{user_show._id}}" title="" data-ripple="">time
+                                            line</a>
+                                        {{#ifEquals user._id user_show._id}}
+                                            <a class="" href="/edit/{{user._id}}" title="" data-ripple="">Edit Account</a>
+                                        {{/ifEquals}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section><!-- top area -->
+
+        <section>
+            <div class="gap gray-bg">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row merged20" id="page-contents">
+                                <div class="col-lg-3">
+                                    <aside class="sidebar static left">
+                                        <div class="widget stick-widget">
+                                            <h4 class="widget-title">Shortcuts</h4>
+                                            <ul class="naves">
+                                                <li>
+                                                    <i class="ti-clipboard"></i>
+                                                    <a href="/" title="">News feed</a>
+                                                </li>
+                                                <li>
+                                                    <i class="ti-files"></i>
+                                                    <a href="/me/{{user._id}}" title="">My page</a>
+                                                </li>
+                                                <li>
+                                                    <i class="fa fa-edit"></i>
+                                                    <a href="/edit/{{user._id}}" title="">Edit account</a>
+                                                </li>
+                                                <li>
+                                                    <i class="ti-bell"></i>
+                                                    <a href="/depost" title="">Department Post</a>
+                                                </li>
+                                                <button type="button" onclick="signOut()" class="btn btn-outline-info"><i
+                                                        class="ti-power-off"></i> Log Out</button>
+                                            </ul>
+                                        </div><!-- Shortcuts -->
+                                    </aside>
+                                </div><!-- sidebar -->
+                                <p id = "userID{{user._id}}" type = hidden></p>
+                                <div class="col-lg-6">
+                                    {{#ifEquals user.role 2}}
+                                        <div class="central-meta">
+                                            <div class="new-postbox">
+                                                <figure>
+                                                {{#if user.image_url}}
+                                                    <img src="{{user.image_url}}" alt="">
+                                                {{else}}
+                                                    <img src="/images/resources/admin2.jpg" alt="">
+                                                {{/if}}
+                                                </figure>
+                                                <div class="newpst-input">
+                                                    <form id="formSubmit" method="post" onsubmit="postForm(event)" enctype="multipart/form-data">
+                                                        <textarea rows="3" id="content" name="content" placeholder="write something"></textarea>
+                                                        <div class="attachments">
+                                                            <ul>
+                                                                <li>
+                                                                    <i class="fa fa-image"></i>
+                                                                    <label class="fileContainer">
+                                                                        <input type="file" name="img" accept="image/*" onchange="previewFile(this);">
+                                                                    </label>
+                                                                </li>
+                                                                <li>
+                                                                    <i class="fa fa-video-camera" onclick="showVideo()"></i>
+                                                                </li>
+                                                                <li>
+                                                                    <button type="submit">Post</button>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <br>
+                                                        <div style="display: none;" id = "youtube_link">
+                                                            <div class="input-group-prepend" >
+                                                                <span class="input-group-text" id="inputGroup-sizing-lg">Youtube link</span>
+                                                            </div>
+                                                            <input type="text" id ="video_youtube" class="form-control" name = "video" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+                                                        </div>
+                                                        <img id="previewImg">	
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div><!-- add post new box -->
+                                    {{/ifEquals}}	
+                                    <div class="loadMore" id = "list_post">
+                                        {{#each post}}
+                                            <div class="central-meta item" id = "postDiv{{id}}">
+                                                <div class="user-post">
+                                                    <div class="friend-info">
+                                                        <figure>
+                                                        {{#if user.image_url}}
+                                                            <img src="{{user.image_url}}" alt="">
+                                                        {{else}}
+                                                            <img src="/images/resources/admin2.jpg" alt="">
+                                                        {{/if}}
+                                                        </figure>
+                                                        <div class="friend-name">
+                                                            <ins><a href="/me/{{user._id}}" title="">{{user.name}}</a>
+                                                                {{#ifEquals user._id ../user._id }}
+                                                                    <i class="fa fa-remove" style="cursor: pointer;float: right;margin-right:10px;"
+                                                                    data-toggle="modal" data-target="#deletePost" onclick="showDelPost('{{id}}')"></i>
+
+                                                                    <i class="fa fa-edit" style="cursor: pointer;float: right;margin-right:10px;"
+                                                                    data-toggle="modal" data-target="#editPost" onclick="showPost('{{id}}')" ></i>
+                                                                {{/ifEquals}}
+                                                            </ins>
+                                                            <span>published: {{create_date}}</span>
+                                                        </div>
+                                                        <div class="description">
+                                                            <p id = "contentPost{{id}}">{{content}}</p>
+                                                        </div>
+                                                        <div class="post-meta">
+                                                            {{#if image}}
+                                                                <img src={{image}} alt="" id = "imgPost{{id}}">
+                                                            {{/if}}
+                                                            {{#if youtube_url}}
+                                                                <p id = "videoPost{{id}}" hidden>{{youtube_url}}</p>
+                                                                <iframe width="420" height="315"
+                                                                    src= {{youtube_url}}
+                                                                    allow="autoplay;" allowfullscreen
+                                                                    id = "if_frame{{id}}"
+                                                                    >
+                                                                </iframe >
+                                                            {{/if}}															
+                                                            <div class="we-video-info">
+                                                                <ul>
+                                                                    <li>
+                                                                        <span class="like" data-toggle="tooltip"
+                                                                            title="like" >
+                                                                            {{#ifEqualsLike ../user._id like}}
+                                                                                <i class="fa fa-heart" id = "Ilike{{id}}" onclick="likePost('{{id}}')"></i>
+                                                                            {{else}}
+                                                                                <i class="ti-heart" id = "Ilike{{id}}" onclick="likePost('{{id}}')"></i>
+                                                                            {{/ifEqualsLike}}	
+                                                                            <ins id="like{{id}}">{{like.length}}</ins>
+
+                                                                            {{!-- <i class="fa fa-heart" onclick="unlikePost('{{id}}')"></i>  --}}
+                                                                        </span>
+                                                                    </li>																																									
+                                                                    <li>
+                                                                        <span class="comment" data-toggle="tooltip"
+                                                                            title="Comments">
+                                                                            <i class="fa fa-comments-o"></i>
+                                                                        </span>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="coment-area">
+                                                        <ul class="we-comet">
+                                                            <li class="post-comment">
+                                                                <div class="comet-avatar">
+                                                                    <img src="/images/resources/comet-1.jpg" alt="">
+                                                                </div>
+                                                                <div class="post-comt-box">
+                                                                    <form method="post">
+                                                                        <textarea placeholder="Post your comment"
+                                                                            id="comment_content{{id}}"
+                                                                            onkeypress="post_comment(event,'{{id}}')"></textarea>
+                                                                        <div class="add-smiles">
+                                                                            <span class="em em-expressionless"
+                                                                                title="add icon"></span>
+                                                                        </div>
+                                                                        <button type="submit"></button>
+                                                                    </form>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                        <ul class="we-comet"  id = "post_comment{{id}}">
+                                                            {{#each comment}}	
+                                                            <li id ="commentLi{{id}}">
+                                                                <div class="comet-avatar">
+                                                                    <img src="/images/resources/comet-1.jpg">
+                                                                </div>
+                                                                <div class="we-comment">
+                                                                    <div class="coment-head">
+                                                                        <h5><a href="time-line.html" >{{user.name}}</a>
+                                                                        </h5>
+                                                                        <span>{{create_date}}</span>
+
+                                                                        {{#ifEquals user._id ../../user._id }}
+                                                                        <i class="fa fa-remove" style="cursor: pointer;float: right;margin-right:10px;" data-toggle="modal"
+                                                                            data-target="#deleteComment" onclick="showDelComment('{{id}}')"></i>
+                                                                        
+                                                                        <i class="fa fa-edit" style="cursor: pointer;float: right;margin-right:10px;" data-toggle="modal"
+                                                                            data-target="#editComment" onclick="showComment('{{id}}')"> </i>
+                                                                        {{/ifEquals}}	
+
+
+                                                                    </div>
+                                                                    <p id="content_comment{{id}}">{{content}}</p>
+                                                                </div>
+                                                            </li>																														
+                                                            {{/each}}													
+                                                        </ul>
+                                                        <ul class="we-comet">
+                                                            <li>
+                                                                <a href="#" title="" class="showmore underline">more
+                                                                    comments</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>									
+                                        {{/each}}
+                                    </div>
+                                </div><!-- centerl meta -->
+
+                                <!-- The Modal Post -->
+                                <div class="modal fade" id="editPost">
+                                    <form id="formSubmitEdit" method="post" onsubmit="putForm(event)" enctype="multipart/form-data">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                            <input id="postEdit" name = "id" type="hidden">	
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Edit Post</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                <textarea placeholder="Edit your post"
+                                                    id="edit_post"
+                                                    name="content"
+                                                ></textarea>
+                                                <div class="attachments">
+                                                    <b><hr></b>
+                                                    <ul>
+                                                        <li id = "image_edit_icon">
+                                                            <i class="fa fa-image" ></i>
+                                                            <label class="fileContainer">
+                                                                <input id="file_edit" type="file" name="img" accept="image/*" onchange="previewFileEdit(this);">
+                                                            </label>
+                                                        </li>
+                                                        <li id = "video_edit_icon">
+                                                            <i class="fa fa-video-camera"></i>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <img style="display: none;" id="previewImgEdit">	
+                                                <div style="display: none;" id = "youtube_link_edit">
+                                                    <div class="input-group-prepend" >
+                                                        <span class="input-group-text" id="inputGroup-sizing-lg">Youtube link</span>
+                                                    </div>
+                                                    <input type="text" id ="video_youtube_edit" class="form-control" name = "video" aria-label="Large" aria-describedby="inputGroup-sizing-sm">
+                                                </div>																													
+                                            </div>
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn" >Confirm</button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal" id ="close_post">Close</button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </form>	
+                                </div>			
+                                <!-- The Modal Delete Post -->
+                                <div class="modal fade" id="deletePost">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <input id="postDelete" type="hidden">
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Delete Post</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                Do you want to delete Post?
+                                            </div>
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn" data-dismiss="modal" onclick="deletePost()">Confirm</button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>											
+                                <!-- The Modal Delete -->
+                                <div class="modal fade" id="deleteComment">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <input id="commentDelete" type="hidden">
+                                            <!-- Modal Header -->
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Delete comment</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <!-- Modal body -->
+                                            <div class="modal-body">
+                                                Do you want to delete comment?
+                                            </div>
+                                            <!-- Modal footer -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn" data-dismiss="modal" onclick="deleteComment()">Confirm</button>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- The Modal Edit -->
+                                <div class="modal fade" id="editComment">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <input id="commentEdit" type="hidden">	
+                                        <!-- Modal Header -->
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Edit comment</h4>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+                                        <!-- Modal body -->
+                                        <div class="modal-body">
+                                            <textarea placeholder="Edit your comment"
+                                                id="edit_comment"></textarea>
+                                        </div>
+                                        <!-- Modal footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn" data-dismiss="modal" onclick="editComment()">Confirm</button>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>								
+                                <div class="col-lg-3">
+                                    <aside class="sidebar static right">
+                                        <div class="widget">
+                                            <div class="banner medium-opacity bluesh">
+                                                <div class="bg-image" style="background-image: url(images/TDTU.png)">
+                                                </div>
+                                                <div class="baner-top">
+                                                    <span><img alt="" src="/images/tdt.png"></span>
+                                                    <i class="fa fa-ellipsis-h"></i>
+                                                </div>
+                                                <div class="banermeta">
+                                                    <p>
+                                                        See what news from TDTU
+                                                    </p>
+                                                    <span>Update news</span>
+                                                    <a data-ripple="" title="" href="https://www.tdtu.edu.vn/">Check
+                                                        now</a>
+                                                </div>
+                                                </div>
+                                                </div>
+                                        <div class="widget friend-list stick-widget">
+                                            <h4 class="widget-title">Recent Department Posts <i class="fa fa-bell w3-text-red w3-large"></i></h4>
+                                            <ul class="short-profile">
+                                                {{#each depost_list}}<li>
+                                                    <span><a href="/detail/{{id}}">{{{title}}}</a></span>
+                                                    <p>{{departmentName}} | Ngày đăng {{date}}</p>
+                                                </li>
+                                                
+                                                {{/each}}
+
+                                                <li><a href="/depost">See more</a></li>
+                                            </ul>
+                                        </div>
+                                    </aside>
+                                </div><!-- sidebar -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+</body>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>{{title}}</title>
+    {{!-- Init  --}}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />{{!-- CongP update 24.11 Start --}}
+    <meta name="google-signin-client_id" content="184293983150-cfsqdifs6nb8qsprlve2qf21nb7jgpih.apps.googleusercontent.com">
+    <link rel="icon" href="/images/tdt.png" type="image/png" sizes="16x16">
+    
+    {{!-- CSS --}}
+    <link rel="stylesheet" href="/stylesheets/main.min.css">
+
+    {{!-- CongP update 28.11 Start --}}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.socket.io/4.4.0/socket.io.min.js" 
+      integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" 
+      crossorigin="anonymous"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script src="/jquery/jquery.min.js"></script>
+    <script src="/javascripts/main.js"></script>
+  
+  </head>
+  
+  <body>
+    <div class="responsive-header">
+      <div class="mh-head first Sticky">
+        <span class="mh-btns-left">
+          <a class="" href="#menu"><i class="fa fa-align-justify"></i></a>
+        </span>
+        <span class="mh-text">
+          <a href="/" title=""><img src="/images/tdt.png" alt="" style="width: 50px;"></a>
+        </span>
+      </div>
+      <div class="mh-head second">
+        <form class="mh-form">
+          <input placeholder="search" />
+          <a href="#/" class="fa fa-search"></a>
+        </form>
+      </div>
+      <nav id="menu" class="res-menu">
+        <ul>
+          {{#ifEquals user.role 0}}
+          <li><a href="/admin" title="">Admin Page</a></li>
+          {{/ifEquals}}
+          {{#ifEquals user.role 1}}
+          <li><a href="/users" title="">Users Page</a></li>
+          {{/ifEquals}}
+          <li><span>Home</span>
+            <ul>
+              <li><a href="/" title="">Home Page</a></li>
+              <li><a href="/depost" title="">Department Post</a></li>
+            </ul>
+          </li>
+          <li><span>Time Line</span>
+            <ul>
+              <li><a href="/me/{{user._id}}" title="">My Timeline</a></li>
+              <li><a href="/edit" title="">Edit Account</a></li>
+            </ul>
+          </li><li><span>Deparment</span>
+            <ul>
+              <li><a href="/depost" title="">Department Post</a></li>
+              <li><a href="/depost/list" title="">Department List</a></li>
+            </ul>
+          </li>
+          <li><span>Support & Help</span>
+            <ul>
+              <li><a href="https://www.facebook.com/C0ngPham" title="">Support & Help</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+
+    </div><!-- responsive header -->
+    <div class="topbar stick is_stuck" style="position: fixed; top: 0px; width: 100%;">
+      <div class="logo">
+        <a title="" href="/"><img src="/images/logo.png" alt=""></a>
+      </div>
+
+      <div style="position: fixed; text-align: center; width: 100%;">
+          <div id="myFlashMsg" class="alert alert-success alert-dismissible fade" style="display: none;" role="alert">
+              <a href="#" id="flash_link" style="text-decoration: none;">
+                  <strong id="flashDepart">Holy OMG</strong> Vừa có thông báo mới.
+              </a>
+              <button type="button" class="close" onclick="closeFlash()" aria-label="Close"> 
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+      </div>
+    
+      <div class="top-area">
+        <ul class="main-menu">
+          <li>
+            <a href="/" title="">Home</a>
+            <ul>
+              <li><a href="/" title="">Home page</a></li>
+              <li><a href="/depost" title="">Department Posts</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="/me/{{user._id}}" title="">timeline</a>
+            <ul>
+              <li><a href="/me/{{user._id}}" title="">My Timeline</a></li>
+              <li><a href="/edit/{{user._id}}" title="">Edit Account</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#" title="">Department</a>
+            <ul>
+              <li><a href="/depost/" title="">Department Post</a></li>
+              <li><a href="/depost/list" title="">Department List</a></li>
+            </ul>
+          </li>
+
+          <li>
+            <a href="#" title="">more pages</a>
+            <ul>
+              {{#ifEquals user.role 0}}
+              <li><a href="/admin" title="">Admin page</a></li>
+              {{/ifEquals}}
+              {{#ifEquals user.role 1}}
+              <li><a href="/users" title="">User page</a></li>
+              {{/ifEquals}}
+              <li><a href="/404" title="">404 error page</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div><!-- topbar -->
+    
+    <div class="fixed-sidebar right">
+      <div class="menu-left">
+        <ul class="left-menu">
+          <li><a href="/" title="Home Page" data-toggle="tooltip" data-placement="right"><i
+                class="ti-magnet"></i></a></li>
+          <li><a href="/edit/{{user._id}}" title="Edit Profile" data-toggle="tooltip" data-placement="right"><i
+                class="ti-panel"></i></a></li>
+          <li><a href="/me/{{user._id}}" title="My Page" data-toggle="tooltip" data-placement="right"><i
+                class="ti-themify-favicon"></i></a></li>
+          <li><a href="/depost" title="Department Post" data-toggle="tooltip" data-placement="right"><i
+                class="ti-bookmark-alt"></i></a></li>
+        </ul>
+      </div>
+    </div><!-- left sidebar menu -->
+
+<div class="side-panel">
+  <h4 class="panel-title">General Setting</h4>
+  <form method="post">
+    <div class="setting-row">
+      <span>use night mode</span>
+      <input type="checkbox" id="nightmode1" />
+      <label for="nightmode1" data-on-label="ON" data-off-label="OFF"></label>
+    </div>
+    <div class="setting-row">
+      <span>Notifications</span>
+      <input type="checkbox" id="switch22" />
+      <label for="switch22" data-on-label="ON" data-off-label="OFF"></label>
+    </div>
+    <div class="setting-row">
+      <span>Notification sound</span>
+      <input type="checkbox" id="switch33" />
+      <label for="switch33" data-on-label="ON" data-off-label="OFF"></label>
+    </div>
+    <div class="setting-row">
+      <span>My profile</span>
+      <input type="checkbox" id="switch44" />
+      <label for="switch44" data-on-label="ON" data-off-label="OFF"></label>
+    </div>
+    <div class="setting-row">
+      <span>Show profile</span>
+      <input type="checkbox" id="switch55" />
+      <label for="switch55" data-on-label="ON" data-off-label="OFF"></label>
+    </div>
+  </form>
+  <h4 class="panel-title">Account Setting</h4>
+  <form method="post">
+    <div class="setting-row">
+      <span>Sub users</span>
+      <input type="checkbox" id="switch66" />
+      <label for="switch66" data-on-label="ON" data-off-label="OFF"></label>
+    </div>
+    <div class="setting-row">
+      <span>personal account</span>
+      <input type="checkbox" id="switch77" />
+      <label for="switch77" data-on-label="ON" data-off-label="OFF"></label>
+    </div>
+    <div class="setting-row">
+      <span>Business account</span>
+      <input type="checkbox" id="switch88" />
+      <label for="switch88" data-on-label="ON" data-off-label="OFF"></label>
+    </div>
+    <div class="setting-row">
+      <span>Show me online</span>
+      <input type="checkbox" id="switch99" />
+      <label for="switch99" data-on-label="ON" data-off-label="OFF"></label>
+    </div>
+    <div class="setting-row">
+      <span>Delete history</span>
+      <input type="checkbox" id="switch101" />
+      <label for="switch101" data-on-label="ON" data-off-label="OFF"></label>
+    </div>
+    <div class="setting-row">
+      <span>Expose author name</span>
+      <input type="checkbox" id="switch111" />
+      <label for="switch111" data-on-label="ON" data-off-label="OFF"></label>
+    </div>
+  </form>
+</div><!-- side panel -->
+
+    {{{body}}}
+</body>
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-4">
+        <div class="widget">
+          <div class="foot-logo">
+            <div class="logo">
+              <a href="/" title=""><img src="/images/logo.png" alt=""></a>
+            </div>
+            <p>
+              Light from here shall illuminate the entire universe.
+            </p>
+          </div>
+          <ul class="location">
+            <li>
+              <i class="ti-map-alt"></i>
+              <p>19 Đ.Nguyễn Hữu Thọ, Tân Hưng, Quận 7, Thành phố Hồ Chí Minh, Việt Nam</p>
+            </li>
+            <li>
+              <i class="ti-mobile"></i>
+              <p>+8419 002 024</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4">
+        <div class="widget">
+          <div class="widget-title">
+            <h4>follow</h4>
+          </div>
+          <ul class="list-style">
+            <li><i class="fa fa-facebook-square"></i> <a href="https://www.facebook.com/tonducthanguniversity"
+                title="">facebook</a></li>
+            <li><i class="fa fa-twitter-square"></i><a href="#" title="">twitter</a></li>
+            <li><i class="fa fa-instagram"></i><a href="#" title="">instagram</a></li>
+            <li><i class="fa fa-google-plus-square"></i> <a href="#" title="">Google+</a></li>
+            <li><i class="fa fa-pinterest-square"></i> <a href="#" title="">Pintrest</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4">
+        <div class="widget">
+          <div class="widget-title">
+            <h4>Navigate</h4>
+          </div>
+          <ul class="list-style">
+            <li><a href="#" title="">about us</a></li>
+            <li><a href="#" title="">contact us</a></li>
+            <li><a href="#" title="">terms & Conditions</a></li>
+            <li><a href="#" title="">RSS syndication</a></li>
+            <li><a href="#" title="">Sitemap</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4">
+        <div class="widget">
+          <div class="widget-title">
+            <h4>Members</h4>
+          </div>
+          <ul class="list-style">
+            <li><a href="#" title="">Phạm Công</a></li>
+            <li><a href="#" title="">Phạm Tiến Đạt</a></li>
+            <li><a href="#" title="">Nguyễn Công Thành</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-4">
+        <div class="widget">
+          <div class="widget-title">
+            <h4>download apps</h4>
+          </div>
+          <ul class="colla-apps">
+            <li><a href="https://play.google.com/store?hl=en" title=""><i class="fa fa-android"></i>android</a></li>
+            <li><a href="https://www.apple.com/lae/ios/app-store/" title=""><i class="ti-apple"></i>iPhone</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer><!-- footer -->
+</html>
